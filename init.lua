@@ -171,7 +171,13 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+vim.o.shell = 'C:/msys64/usr/bin/bash.exe'
 vim.o.shellcmdflag = '-c'
+vim.o.shellslash = true
+vim.o.shellquote = ''
+vim.o.shellxquote = ''
+
+vim.o.fileformats = 'unix,dos'
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
