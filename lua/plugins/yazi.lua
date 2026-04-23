@@ -26,7 +26,7 @@ return {
       desc = '[Y]azi [N]eovim files',
     },
     {
-      '<c-y>',
+      '<c-up>',
       '<cmd>Yazi toggle<cr>',
       desc = 'Resume the last yazi session',
     },
