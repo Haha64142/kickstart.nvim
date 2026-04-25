@@ -118,7 +118,11 @@ vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
 end)
 
-vim.g.clipboard = 'win32yank'
+local os_name = vim.loop.os_uname().sysname
+
+if os_name == 'Windows_NT' then
+  vim.g.clipboard = 'win32yank'
+end
 
 -- Enable break indent
 vim.o.breakindent = true
