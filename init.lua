@@ -701,7 +701,6 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        clangd = {},
         -- gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
@@ -714,6 +713,9 @@ require('lazy').setup({
         -- ts_ls = {},
         --
 
+        neocmake = {},
+        clangd = {},
+        bashls = {},
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -748,6 +750,9 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'prettierd',
         'clang-format',
+        'cmakelang',
+        'shellcheck',
+        'shfmt',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -803,6 +808,8 @@ require('lazy').setup({
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
         html = { 'prettierd', 'prettier', stop_after_first = true },
         css = { 'prettierd', 'prettier', stop_after_first = true },
+        json = { 'prettierd', 'prettier', stop_after_first = true },
+        cmake = { 'cmake_format' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -885,7 +892,7 @@ require('lazy').setup({
       completion = {
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
-        documentation = { auto_show = false, auto_show_delay_ms = 500 },
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
       },
 
       sources = {
