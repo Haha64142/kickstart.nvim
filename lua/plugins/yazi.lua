@@ -22,13 +22,15 @@ return {
     {
       -- Open in Neovim files
       '<leader>yn',
-      '<cmd>Yazi ' .. vim.fn.stdpath 'config' .. '<cr>',
+      function()
+        require('yazi').yazi({}, vim.fn.stdpath 'config')
+      end,
       desc = '[Y]azi [N]eovim files',
     },
     {
-      '<c-up>',
+      '<leader>yr',
       '<cmd>Yazi toggle<cr>',
-      desc = 'Resume the last yazi session',
+      desc = '[R]esume the last yazi session',
     },
   },
   ---@type YaziConfig | {}

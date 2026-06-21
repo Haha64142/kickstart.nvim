@@ -98,6 +98,10 @@ vim.g.have_nerd_font = true
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+if vim.g.neovide then
+  vim.o.guifont = 'MesloLGM_Nerd_Font_Mono:h11'
+end
+
 vim.o.exrc = true
 vim.o.secure = true
 
@@ -311,6 +315,8 @@ require('lazy').setup({
     },
   },
 
+  { 'MeanderingProgrammer/render-markdown.nvim', opts = {} },
+
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
   -- This is often very useful to both group configuration, as well as handle
@@ -376,6 +382,7 @@ require('lazy').setup({
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
         { 'gr', group = 'LSP Actions', mode = { 'n' } },
         { '<leader>y', group = '[Y]azi' },
+        { '<leader>c', group = '[C]sv View' },
       },
     },
   },
@@ -705,12 +712,6 @@ require('lazy').setup({
         --
 
         neocmake = {},
-        clangd = {
-          cmd = {
-            'clangd',
-            '--query-driver=C:/msys64/ucrt64/bin/g++',
-          },
-        },
         bashls = {},
         lua_ls = {
           -- cmd = { ... },
@@ -726,6 +727,13 @@ require('lazy').setup({
             },
           },
         },
+        ty = {},
+      }
+
+      --- Servers that are installed without Mason for certain reasons
+      ---@type table<string, vim.lsp.Config>
+      local external_servers = {
+        clangd = {}, --- clangd needs to be installed with msys to function properly
       }
 
       -- Ensure the servers and tools above are installed
@@ -745,14 +753,19 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'prettierd',
-        'clang-format',
         'cmakelang',
         'shellcheck',
         'shfmt',
+        'ruff',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       for name, server in pairs(servers) do
+        vim.lsp.config(name, server)
+        vim.lsp.enable(name)
+      end
+
+      for name, server in pairs(external_servers) do
         vim.lsp.config(name, server)
         vim.lsp.enable(name)
       end
@@ -796,6 +809,9 @@ require('lazy').setup({
         css = { 'prettierd', stop_after_first = true },
         json = { 'prettierd', stop_after_first = true },
         cmake = { 'cmake_format' },
+        python = { 'ruff_format' },
+        c = { 'clang_format' },
+        cpp = { 'clang_format' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -1008,9 +1024,9 @@ require('lazy').setup({
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
-  -- require 'kickstart.plugins.autopairs',
+  require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   { import = 'plugins' },
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
